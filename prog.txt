@@ -1,0 +1,90 @@
+In this session, I focused on building out the core features of the InventEd application, addressing several phases and making corrections based on your feedback.
+
+**Initial Setup & Understanding:**
+*   I began by confirming my understanding of the project's full-stack nature (React/Vite/Tailwind frontend, Express/Bun/SQLite backend) and the "backend first, then frontend" development workflow.
+
+**Phase 1 – Core Database & Models:**
+*   **Objective:** Set up the SQLite database schema and define shared TypeScript interfaces for data models.
+*   **Actions:**
+    *   Created a `common/types.ts` file containing all necessary TypeScript interfaces (e.g., `User`, `Group`, `Task`, `Lesson`).
+    *   On the backend, I installed `better-sqlite3` and its types.
+    *   Developed `backend/src/db/setup.ts` to define the database schema (tables for Users, Groups, Tasks, Lessons, StudentAnswers, etc.) and a `setupDatabase` function.
+    *   Integrated `setupDatabase()` into `backend/index.ts` to initialize the database on application start.
+    *   **Encountered Issue:** Faced a `better-sqlite3` ABI version mismatch error with the Bun runtime.
+    *   **User Intervention:** You resolved this by switching the backend to use `bun:sqlite`.
+    *   **My Subsequent Actions (after user fix):**
+        *   Modified `backend/src/db/setup.ts` to include initial seed data (a teacher, three students, and a group with those students).
+        *   Added a `UNIQUE(lessonId, studentId)` constraint to the `StudentAnswers` table in the schema to prevent duplicate submissions.
+        *   Deleted the existing `backend/db/invented.db` file and re-ran the setup script to apply the updated schema and seed the database.
+    *   **Frontend Configuration:** Configured `frontend/tsconfig.app.json` and `frontend/vite.config.ts` to correctly resolve import paths for the new `common/` directory, allowing shared TypeScript types to be used across both frontend and backend.
+
+**Phase 2 – Lessons & Task Flow:**
+*   **Objective:** Implement backend API routes for tasks and lessons, and build the corresponding frontend UI.
+*   **Actions (Backend):**
+    *   Installed `cors` and its types for cross-origin requests.
+    *   Updated `backend/index.ts` to use `cors()` and `express.json()` middleware. Initially, a temporary `x-user-id` stub middleware was added for authentication simulation.
+    *   Created placeholder route files: `backend/src/routes/tasks.ts` and `backend/src/routes/lessons.ts`.
+    *   Implemented the following API endpoints:
+        *   `POST /tasks`: To create new tasks.
+        *   `GET /tasks`: To list tasks for a teacher.
+        *   `GET /tasks/:id`: To retrieve details of a specific task.
+        *   `POST /lessons/start`: To initiate a new lesson.
+        *   `GET /lessons/active`: To find an active lesson for a student (this was later refactored).
+        *   `POST /lessons/:id/submit`: To allow students to submit their answers for a lesson, including score calculation.
+        *   `GET /lessons/:id/analytics`: To provide analytics for a lesson, showing student scores and class average.
+*   **Actions (Frontend):**
+    *   Created `frontend/src/lib/api.ts` as a centralized client for all backend API interactions.
+    *   Installed `react-router-dom` for client-side routing.
+    *   Restructured `frontend/src/App.tsx` and `frontend/src/main.tsx` to set up the routing infrastructure.
+    *   Created initial page components: `HomePage.tsx`, `TeacherTasksPage.tsx`, `TeacherTaskCreatePage.tsx`, `StudentDashboardPage.tsx`, `TeacherLessonAnalyticsPage.tsx`, and `StudentTaskSolverPage.tsx`.
+    *   Implemented the UI for teachers to list tasks, create new tasks, and view lesson analytics.
+    *   Implemented the UI for students to see active lessons and solve/submit tasks.
+
+**Phase 3 – Groups:**
+*   **Objective:** Implement features for group management.
+*   **Actions (Backend):**
+    *   Created `backend/src/routes/groups.ts` and integrated it into `backend/index.ts`.
+    *   Implemented API endpoints for groups:
+        *   `GET /groups`: To list groups based on the user's role (teacher or student).
+        *   `POST /groups`: To allow teachers to create new groups (initially by name only).
+        *   `GET /groups/:id`: To retrieve detailed information about a group, including its students.
+*   **Actions (Frontend):**
+    *   Updated `frontend/src/lib/api.ts` with new functions for group operations (`getGroups`, `getGroup`, `createGroup`).
+    *   Created `frontend/src/pages/teacher/GroupsPage.tsx` for teachers to view and create groups.
+    *   Created `frontend/src/pages/student/GroupsPage.tsx` for students to view their assigned groups.
+
+**Phase 5 – Authentication:**
+*   **Objective:** Replace the temporary `x-user-id` authentication stub with a proper JWT-based system.
+*   **Actions (Backend):**
+    *   Installed `jsonwebtoken`.
+    *   Created `backend/src/routes/auth.ts` with a `POST /auth/login` endpoint to validate credentials and issue JWTs.
+    *   Created `backend/src/middleware/authMiddleware.ts` with a `protect` middleware to verify JWTs and attach user data to the request.
+    *   Updated `backend/index.ts` to use the new `authRoutes` and removed the old `x-user-id` stub middleware.
+    *   Modified `backend/src/routes/tasks.ts`, `backend/src/routes/lessons.ts`, and `backend/src/routes/groups.ts` to use the `protect` middleware and retrieve user information from `req.user.id` (instead of `x-user-id` headers).
+*   **Actions (Frontend):**
+    *   Installed `jwt-decode` for client-side JWT parsing.
+    *   Updated `frontend/src/lib/api.ts` with `login` and `logout` functions, and to automatically send JWTs in the `Authorization` header for protected requests.
+    *   Created `frontend/src/context/AuthContext.tsx` for auth state management.
+    *   Created `frontend/src/pages/LoginPage.tsx` for user login.
+    *   Created `frontend/src/components/ProtectedRoute.tsx` to guard routes based on authentication status and user roles.
+    *   Refactored `frontend/src/main.tsx` to wrap the application in `AuthProvider`.
+    *   Refactored `frontend/src/App.tsx` to use the authentication context, display conditional navigation based on user role, and implement protected routes.
+
+**Corrections & Refinements:**
+*   **File Structure Inconsistency:**
+    *   **Problem:** Several page components were initially created in the root `frontend/src/pages` directory instead of their intended `teacher/` or `student/` subdirectories.
+    *   **Resolution:** Moved `StudentDashboardPage.tsx`, `StudentTaskSolverPage.tsx`, `TeacherLessonAnalyticsPage.tsx`, `TeacherTaskCreatePage.tsx`, and `TeacherTasksPage.tsx` to their correct subdirectories. Updated all corresponding import paths in `App.tsx`.
+*   **Lesson Starting Workflow Refactor:**
+    *   **Problem:** The initial lesson starting flow was not aligned with the desired group-centric approach (teacher started lesson from tasks, task was immediately assigned).
+    *   **Backend Resolution:**
+        *   Modified `Lessons` table schema to make `taskId` nullable.
+        *   Updated `POST /lessons/start` to only accept `groupId` (lesson starts without an assigned task).
+        *   Added a new `POST /lessons/:id/assign-task` endpoint to allow teachers to assign a task to an already active lesson.
+    *   **Frontend Resolution (Teacher):**
+        *   Removed the "Start Lesson" button and modal from `TeacherTasksPage.tsx`.
+        *   Modified `TeacherGroupsPage.tsx` to link to a new `TeacherGroupDetailPage.tsx`.
+        *   Created `TeacherGroupDetailPage.tsx` where teachers can now start a lesson for a specific group and then, if a lesson is active, select and assign a task to it.
+    *   **Frontend Resolution (Student):**
+        *   Updated `App.tsx` to remove the generic student dashboard route (`/student`) and made `/student/groups` the primary entry point for students.
+        *   Modified `frontend/src/pages/student/GroupsPage.tsx` to link to `frontend/src/pages/student/GroupDetailPage.tsx`.
+        *   Updated `frontend/src/pages/student/GroupDetailPage.tsx` to check if an active lesson has a `taskId` assigned. If not, it displays a "Waiting for teacher to assign task" message; otherwise, it shows the "Join Lesson" button.
