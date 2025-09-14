@@ -1,0 +1,139 @@
+Phase 1 – Core Database & Models
+
+Initialize SQLite DB with tables:
+
+Users (id, name, role, personalId)
+
+Groups (id, name, teacherId)
+
+GroupStudents (id, groupId, studentId)
+
+Tasks (id, title, description, questions JSON, teacherId)
+
+Lessons (id, groupId, taskId, startTime, endTime)
+
+StudentAnswers (id, lessonId, studentId, answers JSON, score)
+
+Create TypeScript interfaces for all core models:
+
+User, Group, Task, Lesson, StudentAnswer
+
+Ensure shared types can be used both in frontend and backend
+
+Phase 2 – Lessons & Task Flow
+
+Backend routes for lessons:
+
+POST /lessons/start → start a lesson with group + task
+
+GET /lessons/active → get active lesson for student
+
+POST /lessons/:id/submit → submit student answers
+
+GET /lessons/:id/analytics → teacher sees score per student + class average
+
+Backend routes for tasks:
+
+GET /tasks → list tasks for teacher
+
+POST /tasks → create a task (title, description, questions JSON)
+
+GET /tasks/:id → get task details
+
+Frontend for lessons & tasks:
+
+Teacher: start lesson, assign task, view analytics
+
+Student: join lesson, solve task, submit answers
+
+Simple analytics display (score + class average)
+
+Phase 3 – Groups
+
+Backend routes:
+
+GET /groups → list groups for user
+
+POST /groups → create group (teacher)
+
+GET /groups/:id → group info including students
+
+Frontend:
+
+Teacher: dashboard to view/create groups
+
+Student: dashboard to view assigned groups
+
+Phase 4 – Project Structure & Setup
+
+Create folder structure:
+
+backend/ → Express + Bun + SQLite
+
+frontend/ → React + Vite + Tailwind
+
+shared/ → TypeScript types/interfaces
+
+Install dependencies and setup basic project scaffolding
+
+Phase 5 – Authentication
+
+Backend route POST /login:
+
+Accept personalId + role (teacher/student)
+
+Validate against Users table
+
+Issue JWT for session
+
+Frontend login page:
+
+Input for Personal ID
+
+Role selector (teacher/student)
+
+On submit, call /login and store JWT
+
+Redirect to teacher or student dashboard
+
+Phase 6 – Basic UI/UX
+
+Frontend enhancements:
+
+Dashboard layout (teacher/student)
+
+Task and lesson lists
+
+Submit answers form
+
+Analytics display (table with student names and scores)
+
+Tailwind styling for clarity (simple, readable)
+
+Phase 7 – Modular Code & Future Expansion
+
+Structure code modularly to allow future additions:
+
+Excel import
+
+AI question generation
+
+Attendance tracking
+
+Multiple tasks per lesson
+
+Real-time lesson updates
+
+✅ Logic behind this order:
+
+Start with the core data and types (everything else relies on it).
+
+Then task & lesson flow, because it’s the app’s main functionality.
+
+Add groups, which are necessary for tasks/lessons.
+
+Then project structure to organize code.
+
+Authentication comes later since it’s just access control for already built functionality.
+
+Finally, UI/UX and modularization to wrap it up and prepare for expansion.

@@ -1,0 +1,65 @@
+App Name: InventEd (invent Education)
+short meta: Try to change how material is being tought and change education in israel specifically but can be worldwide.
+
+Teacher Side:
+- Create Groups (Upload excel file, extract student info, put into the DB)
+- Create Tasks (create tasks with AI, specify subject and a short descrition, and group maybe, puts into the DB. Each task can be made up of a list of questions or anything really.)
+- View groups.
+- View tasks.
+- Start lessons for a specific group.
+- Start a task within a active group.
+
+Student Side:
+- View groups the student is in. (math, cs, etc)
+- View active lessons in each class.
+- join active lessons the teacher has opened.
+- Mark attendance to active lessons.
+- Solve questions the teacher throws at the student.
+
+Teacher + Student Side:
+- Login page to sort each role (Teahcer / Student) into their respective UI's. 
+
+Scenerios:
+- Teacher:
+  - From login to full lesson (new teacher user):
+    - logs in via the login page.
+    - gets redirected to the teacher's UI.
+    - presses the Groups button.
+    - Presses "create new group"
+    - gives the group a name.
+    - uploads an excel file taken from Mashov of all his students with all their info.
+    - [The group gets created and saved in the database]
+    - goes back to the home page.
+    - presses "create new task"
+    - enters the title of the task and instructions and creates 10 multiple choice quesitons with AI on the topic.
+    - saves the task.
+    - [The task gets created and saved in the database]
+    - goes back to the home page.
+    - presses "start a lesson".
+    - selects the group he just created.
+    - the lesson is started for all the students in that group. (all the students that are in that group can now see theres an active lesson in that class and join)
+    - all the students join.
+    - each student that enters is prompted by an attendance screen, they can mark if they are in class or absent.
+    - the teacher selects the task he created earlier and it starts automatically for all the students.
+    - after all the students asnwered, the teacher gets analytics about the class, whos struggling, who's having a easy time, etc...
+    - (the teacher can do as many tasks as he wants, the process remains the same.)
+    - after the lesson is over, it gets saved in the "past lessons" tab for the students and teacher inside the current group.
+
+- Student:
+  - From login to solving questions in class (new studets user):
+    - student sitting in class.
+    - logs in via the login page.
+    - gets redirected to the student UI.
+    - See's theres an active math lesson.
+    - presses his math group.
+    - presses the active lesson and joins.
+    - gets prompted with absance checking, marks he's in class.
+    - waits untill the teacher starts a task.
+    - It was quite hard for the student, he only got 4/10 questions right.
+    - the teacher gets the analytics and notices the student isn't doing too great.
+
+Tech Stack:
+language: typescript
+runtime: bun
+frontend: React + Vite + tailwindcss
+backend: express + sqlite (for now this is a MVP)
