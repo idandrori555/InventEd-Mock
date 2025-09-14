@@ -17,6 +17,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 
+import StudentGroupDetailPage from './pages/student/GroupDetailPage';
+
 function App() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -47,9 +49,6 @@ function App() {
               )}
               {user?.role === 'student' && (
                  <>
-                  <Link to="/student" className="text-gray-500 hover:text-gray-700">
-                    Dashboard
-                  </Link>
                   <Link to="/student/groups" className="text-gray-500 hover:text-gray-700">
                     My Groups
                   </Link>
@@ -91,8 +90,8 @@ function App() {
 
             {/* Protected Student Routes */}
             <Route element={<ProtectedRoute allowedRoles={['student']} />}>
-              <Route path="/student" element={<StudentDashboardPage />} />
               <Route path="/student/groups" element={<StudentGroupsPage />} />
+              <Route path="/student/groups/:id" element={<StudentGroupDetailPage />} />
               <Route path="/lessons/:lessonId/task/:taskId" element={<StudentTaskSolverPage />} />
             </Route>
             

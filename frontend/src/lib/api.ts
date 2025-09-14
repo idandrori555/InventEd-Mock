@@ -8,7 +8,7 @@ import type {
   User,
 } from "common/types";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://10.100.102.26:3000";
 
 async function request(endpoint: string, options: RequestInit = {}) {
   const headers = new Headers(options.headers);
@@ -103,8 +103,8 @@ export const startLesson = (data: {
   });
 };
 
-export const getActiveLesson = (): Promise<Lesson> => {
-  return request("/lessons/active");
+export const getActiveLessonForGroup = (groupId: number): Promise<Lesson> => {
+    return request(`/groups/${groupId}/active-lesson`);
 };
 
 export const submitAnswers = (
@@ -136,10 +136,13 @@ export const getGroup = (id: number): Promise<Group & { students: User[] }> => {
   return request(`/groups/${id}`);
 };
 
-export const createGroup = (name: string): Promise<Group> => {
-  return request("/groups", {
-    method: "POST",
-    body: JSON.stringify({ name }),
-  });
-};
+export const createGroup = (name: string, file: File): Promise<Group> => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('file', file);
 
+    return request('/groups', {
+        method: 'POST',
+        body: formData,
+    });
+};

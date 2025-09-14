@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getGroups } from '@/lib/api';
 import type { Group } from 'common/types';
 
@@ -10,7 +11,6 @@ export default function StudentGroupsPage() {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        // The API will return groups for the logged-in student
         const fetchedGroups = await getGroups();
         setGroups(fetchedGroups);
       } catch (err) {
@@ -34,9 +34,11 @@ export default function StudentGroupsPage() {
           {groups.length > 0 ? (
             groups.map((group) => (
               <li key={group.id}>
-                <div className="px-4 py-4 sm:px-6">
-                  <p className="text-lg font-medium text-indigo-600">{group.name}</p>
-                </div>
+                <Link to={`/student/groups/${group.id}`} className="block hover:bg-gray-50">
+                  <div className="px-4 py-4 sm:px-6">
+                    <p className="text-lg font-medium text-indigo-600">{group.name}</p>
+                  </div>
+                </Link>
               </li>
             ))
           ) : (

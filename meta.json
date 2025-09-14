@@ -1,0 +1,123 @@
+{
+  "project_name": "InventEd (Invent Education)",
+  "short_meta": "InventEd aims to improve how material is taught and learned, starting with schools in Israel and with the potential to scale worldwide. The app provides a structured way for teachers to manage groups, create tasks, and conduct interactive lessons while giving students a clear and engaging platform to participate in class.",
+  "features": {
+    "teacher_side": [
+      {
+        "feature_name": "Create Groups",
+        "description": "Upload an Excel file (e.g., from Mashov) with student details, automatically extracting information and saving it into the database."
+      },
+      {
+        "feature_name": "Manage Groups",
+        "description": "View all existing groups and the students in each group."
+      },
+      {
+        "feature_name": "Create Tasks",
+        "description": "Generate tasks using AI or by manual input. A task includes a subject, short description, and one or more questions."
+      },
+      {
+        "feature_name": "Manage Tasks",
+        "description": "View all previously created tasks."
+      },
+      {
+        "feature_name": "Start Lessons",
+        "description": "Begin a lesson for a specific group. Within a lesson, select one or more tasks for students to solve."
+      },
+      {
+        "feature_name": "Lesson Management",
+        "description": "View live participation, task progress, and results in real time."
+      }
+    ],
+    "student_side": [
+      {
+        "feature_name": "View Groups",
+        "description": "See all groups the student belongs to (e.g., Math, Computer Science)."
+      },
+      {
+        "feature_name": "Join Active Lessons",
+        "description": "Students see when a teacher has opened a lesson and can join it."
+      },
+      {
+        "feature_name": "Mark Attendance",
+        "description": "When joining a lesson, mark presence or absence (MVP can skip this if needed)."
+      },
+      {
+        "feature_name": "Solve Tasks",
+        "description": "Answer the questions the teacher has assigned during the lesson."
+      },
+      {
+        "feature_name": "View Past Lessons",
+        "description": "Access completed lessons and personal results."
+      }
+    ],
+    "shared": [
+      {
+        "feature_name": "Login Page",
+        "description": "Users log in with their Personal ID. They also select their role (Teacher/Student) to be redirected to the correct interface."
+      }
+    ]
+  },
+  "scenarios": {
+    "teacher_scenarios": [
+      {
+        "scenario_name": "From Login to Running a Lesson (New Teacher)",
+        "steps": [
+          "The teacher logs in using their Personal ID and selects “Teacher.”",
+          "They are redirected to the teacher dashboard.",
+          "They click Groups → Create New Group.",
+          "They give the group a name and upload an Excel file with student details.",
+          "The group is created and saved in the database.",
+          "They return to the dashboard and click Create Task.",
+          "They enter a task title, a short description, and either manually enter or generate 10 multiple-choice questions with AI.",
+          "The task is saved in the database.",
+          "They go back to the dashboard and click Start Lesson.",
+          "They select the group they just created.",
+          "All students in that group now see an active lesson.",
+          "Students join the lesson and mark attendance (optional for MVP).",
+          "The teacher assigns the task created earlier.",
+          "Students answer the task questions.",
+          "After submission, the teacher sees analytics: Which students are struggling, Who is performing well, Class averages.",
+          "The teacher continues with more tasks if desired.",
+          "At the end of class, the lesson is saved under “Past Lessons” for both teacher and students."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Past Lessons",
+        "steps": [
+          "Teacher logs in and navigates to their groups.",
+          "Selects a group and opens the Past Lessons tab.",
+          "Reviews detailed analytics for a previous lesson: Student participation rates, Scores per task, Overall class performance trends.",
+          "Uses this data to plan future lessons."
+        ]
+      }
+    ],
+    "student_scenarios": [
+      {
+        "scenario_name": "Joining and Solving a Lesson (New Student)",
+        "steps": [
+          "The student logs in with their Personal ID and selects “Student.”",
+          "They are redirected to the student dashboard.",
+          "They see their active groups (e.g., Math, CS).",
+          "They notice an active lesson in Math and click Join Lesson.",
+          "They are prompted to mark attendance (optional for MVP).",
+          "They wait until the teacher starts a task.",
+          "The task appears on their screen. They answer all questions.",
+          "For example, they answer 10 questions but only get 4/10 correct.",
+          "Their results are submitted.",
+          "After the lesson, they can go to Past Lessons and review their score."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Progress",
+        "steps": [
+          "Student logs in and goes to the dashboard.",
+          "Selects a group and opens the Past Lessons tab.",
+          "Sees a list of lessons they’ve participated in.",
+          "Clicks into one lesson to review: Which questions they got right or wrong, Their overall score.",
+          "Uses this to understand where they need to improve."
+        ]
+      }
+    ]
+  },
+  "why_it_matters": "InventEd provides teachers with a powerful but simple way to manage classes and lessons, while giving students a clear, structured, and engaging experience. The focus is on ease of use, immediate feedback, and actionable analytics that can improve teaching outcomes and learning results."
+}

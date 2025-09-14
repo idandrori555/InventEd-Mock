@@ -39,34 +39,7 @@ router.post('/start', (req, res) => {
   }
 });
 
-// GET /lessons/active -> get active lesson for student
-router.get('/active', (req, res) => {
-  const studentId = req.user.id;
-  if (req.user.role !== 'student') {
-      return res.status(403).json({ message: 'Forbidden: Only students can check for active lessons.' });
-  }
 
-  try {
-    const groupMembershipQuery = db.query('SELECT groupId FROM GroupStudents WHERE studentId = ?');
-    const groupMembership = groupMembershipQuery.get(studentId) as { groupId: number } | null;
-
-    if (!groupMembership) {
-      return res.status(404).json({ message: 'You are not enrolled in any group.' });
-    }
-
-    const activeLessonQuery = db.query('SELECT * FROM Lessons WHERE groupId = ? AND endTime IS NULL ORDER BY startTime DESC');
-    const activeLesson = activeLessonQuery.get(groupMembership.groupId);
-
-    if (!activeLesson) {
-      return res.status(404).json({ message: 'No active lesson found for your group.' });
-    }
-
-    res.json(activeLesson);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching active lesson' });
-  }
-});
 
 // POST /lessons/:id/submit -> submit student answers
 router.post('/:id/submit', (req, res) => {
