@@ -1,0 +1,157 @@
+{
+  "project_name": "InventEd (Invent Education)",
+  "short_meta": "InventEd aims to improve how material is taught and learned, starting with schools in Israel and with the potential to scale worldwide. The app provides a structured way for teachers to manage groups, create tasks, and conduct interactive lessons while giving students a clear and engaging platform to participate in class.",
+  "features": {
+    "teacher_side": [
+      {
+        "feature_name": "Create Groups",
+        "description": "Upload an Excel file (e.g., from Mashov) with student details, automatically extracting information and saving it into the database. Groups can be named by subject or class type (e.g., '10th Grade Math')."
+      },
+      {
+        "feature_name": "Manage Groups",
+        "description": "View all existing groups and the students in each group. Teachers can check enrollment details and confirm student information after import."
+      },
+      {
+        "feature_name": "Create Tasks",
+        "description": "Generate tasks using AI or by manual input. Each task includes a subject, a short description, and one or more questions. Questions may be multiple-choice or open-ended depending on the teacher’s input."
+      },
+      {
+        "feature_name": "Manage Tasks",
+        "description": "View all previously created tasks. Teachers can reuse existing tasks for new lessons without needing to re-create them."
+      },
+      {
+        "feature_name": "Start Lessons",
+        "description": "Begin a lesson by first selecting a specific group. In the group view, teachers click 'Start Lesson' to launch the session. Within a lesson, teachers select one or more tasks for students to solve."
+      },
+      {
+        "feature_name": "Lesson Management",
+        "description": "View live participation, task progress, and results in real time. Teachers can monitor who has joined, who has submitted, and which areas the class struggles with during the lesson."
+      }
+    ],
+    "student_side": [
+      {
+        "feature_name": "View Groups",
+        "description": "Students can see all groups they belong to (e.g., Math, Computer Science). This acts as their entry point for all lessons."
+      },
+      {
+        "feature_name": "Join Active Lessons",
+        "description": "When a teacher starts a lesson, students see a notification or indicator. They can join the active lesson directly from their dashboard."
+      },
+      {
+        "feature_name": "Mark Attendance",
+        "description": "When joining a lesson, students may be prompted to confirm their presence (this is optional for MVP)."
+      },
+      {
+        "feature_name": "Solve Tasks",
+        "description": "Students receive questions assigned by the teacher during lessons. They answer and submit them digitally, getting immediate results once graded."
+      },
+      {
+        "feature_name": "View Past Lessons",
+        "description": "Students can access completed lessons and their results, including question-by-question breakdowns."
+      }
+    ],
+    "shared": [
+      {
+        "feature_name": "Login Page",
+        "description": "Users log in with their Personal ID and select their role (Teacher/Student) to be redirected to the correct interface. This ensures a single login system for both roles."
+      }
+    ]
+  },
+  "scenarios": {
+    "teacher_scenarios": [
+      {
+        "scenario_name": "From Login to Running a Lesson (New Teacher)",
+        "steps": [
+          "Teacher logs in using their Personal ID and selects 'Teacher'.",
+          "They are redirected to the teacher dashboard, which shows options for Groups, Tasks, and Lessons.",
+          "They click Groups → Create New Group.",
+          "They provide a group name and upload an Excel file with student details from Mashov.",
+          "The app extracts student names, IDs, and contact info automatically.",
+          "The group is created and saved in the database.",
+          "The teacher then clicks Create Task.",
+          "They enter a title ('Algebra Basics Quiz'), add a short description, and either manually input or generate 10 multiple-choice questions with AI.",
+          "The task is saved and becomes available in the task library.",
+          "Next, the teacher clicks on 'Groups' from the dashboard.",
+          "They select the '10th Grade Math' group and press 'Start Lesson' in the group view.",
+          "Students in that group now see an active lesson on their dashboards.",
+          "Students join the lesson and optionally mark attendance.",
+          "The teacher assigns the Algebra Basics Quiz task.",
+          "Students work on the questions and submit answers.",
+          "Live analytics update in real time: percentage of students who answered, average score, and most common wrong answers.",
+          "The teacher reviews who is struggling and who is excelling.",
+          "They can assign an additional task if time allows.",
+          "At the end of class, the system automatically saves the lesson under 'Past Lessons' for both teacher and students."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Past Lessons",
+        "steps": [
+          "Teacher logs in and goes to the dashboard.",
+          "They open the 'Groups' section and select the relevant group.",
+          "They navigate to the 'Past Lessons' tab.",
+          "A list of all previous lessons is shown with dates, task titles, and overall class performance summaries.",
+          "The teacher selects one lesson to review.",
+          "They see detailed analytics: participation rates, average scores, and breakdown per question.",
+          "The teacher identifies patterns (e.g., many students struggled with question 5).",
+          "They use this information to adjust the focus of their next lesson."
+        ]
+      },
+      {
+        "scenario_name": "Reusing Existing Tasks",
+        "steps": [
+          "Teacher logs in and navigates to the 'Tasks' section.",
+          "They browse their previously created tasks.",
+          "They select a task that was used in an earlier lesson.",
+          "The teacher goes back to 'Groups' and chooses the group they want to teach.",
+          "Inside the group view, they press 'Start Lesson' to begin the session.",
+          "Students from that group see the active lesson appear.",
+          "The teacher assigns the reused task.",
+          "Students complete the task and submit answers.",
+          "The teacher can now compare results across different groups using the same task."
+        ]
+      }
+    ],
+    "student_scenarios": [
+      {
+        "scenario_name": "Joining and Solving a Lesson (New Student)",
+        "steps": [
+          "Student logs in with their Personal ID and selects 'Student'.",
+          "They are redirected to the student dashboard showing all their groups.",
+          "They see '10th Grade Math' and 'Computer Science' listed.",
+          "A notification indicates an active lesson in Math.",
+          "The student clicks 'Join Lesson'.",
+          "They mark attendance when prompted (if enabled).",
+          "They wait until the teacher assigns the first task.",
+          "The Algebra Basics Quiz appears on their screen.",
+          "They answer 10 multiple-choice questions.",
+          "They only get 4 out of 10 correct.",
+          "Results are submitted and processed.",
+          "After class, the student navigates to 'Past Lessons' to review their score and see which questions they missed."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Progress",
+        "steps": [
+          "Student logs in and opens the dashboard.",
+          "They click on the Math group and open 'Past Lessons'.",
+          "They see a list of completed lessons with scores (e.g., Algebra Quiz – 40%, Geometry Practice – 80%).",
+          "They click into one past lesson.",
+          "They review detailed feedback: which questions were correct, which were wrong, and their overall performance.",
+          "The student realizes they consistently miss algebra-related questions.",
+          "They use this insight to prepare for the next lesson."
+        ]
+      },
+      {
+        "scenario_name": "Participating in Multiple Lessons",
+        "steps": [
+          "Student logs in and sees two groups have active lessons at the same time (Math and CS).",
+          "They choose to join the Math lesson first.",
+          "They complete the assigned task and submit answers.",
+          "After finishing, they return to the dashboard and join the CS lesson.",
+          "They participate in both lessons and later review results for each under 'Past Lessons'."
+        ]
+      }
+    ]
+  },
+  "why_it_matters": "InventEd provides teachers with a powerful but simple way to manage classes and lessons, while giving students a clear, structured, and engaging experience. The focus is on ease of use, immediate feedback, and actionable analytics that can improve teaching outcomes and learning results. Teachers save time in organizing and tracking performance, while students benefit from structured tasks and clear visibility of their progress."
+}
