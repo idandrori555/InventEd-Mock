@@ -4,6 +4,6 @@
     "concurrently": "^9.2.1"
   },
   "scripts": {
-    "dev": "concurrently \"bun run backend:dev\" \"bun run frontend:dev\""
+    "dev": "echo run ./backend/ and ./frontend/ seperately"
   }
 }
