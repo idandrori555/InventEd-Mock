@@ -1,0 +1,211 @@
+{
+  "project_name": "InventEd (Invent Education)",
+  "short_meta": "InventEd is an education platform designed to modernize classroom teaching and learning. Initially focused on schools in Israel, it provides teachers with tools to organize groups, manage lessons, and track student progress, while offering students a structured and engaging way to learn. The platform is scalable and adaptable for global use.",
+  "features": {
+    "teacher_side": [
+      {
+        "feature_name": "Create Groups",
+        "priority": "MVP",
+        "description": "Teachers can upload an Excel file (e.g., exported from Mashov). The file is parsed locally on the client to extract student details, ensuring privacy and reducing server load. Groups can be organized by subject or class type (e.g., '10th Grade Math').",
+        "solves_for": [
+          "Manual entry of student lists",
+          "Errors in managing class data"
+        ]
+      },
+      {
+        "feature_name": "Manage Groups",
+        "priority": "MVP",
+        "description": "Teachers can view, edit, and confirm student information within each group. All groups are listed in one place for easy access.",
+        "solves_for": [
+          "Difficulty tracking multiple classes",
+          "Unclear student enrollment data"
+        ]
+      },
+      {
+        "feature_name": "Create Tasks",
+        "priority": "MVP",
+        "description": "Tasks can be created manually or generated with AI. Each task includes a title, description, and one or more questions (multiple-choice or open-ended).",
+        "solves_for": [
+          "Time-consuming task creation",
+          "Repetitive work for teachers"
+        ]
+      },
+      {
+        "feature_name": "Manage Tasks",
+        "priority": "MVP",
+        "description": "All previously created tasks are stored in a task library, making it easy to reuse them in future lessons.",
+        "solves_for": [
+          "Redundant work re-creating quizzes",
+          "Lack of task organization"
+        ]
+      },
+      {
+        "feature_name": "Start Lessons",
+        "priority": "MVP",
+        "description": "Teachers launch lessons by selecting a group and clicking 'Start Lesson'. They then assign one or more tasks for students to complete.",
+        "solves_for": [
+          "Unstructured class start",
+          "Delays in lesson engagement"
+        ]
+      },
+      {
+        "feature_name": "Lesson Management",
+        "priority": "Future",
+        "description": "During a lesson, teachers can monitor participation in real time, track progress, and view analytics such as completion rates and common errors.",
+        "solves_for": [
+          "Lack of visibility during class",
+          "No live feedback on student performance"
+        ]
+      }
+    ],
+    "student_side": [
+      {
+        "feature_name": "View Groups",
+        "priority": "MVP",
+        "description": "Students see all the groups they belong to (e.g., Math, Computer Science) as their entry point for lessons.",
+        "solves_for": [
+          "Confusion about class organization",
+          "Unclear access to lessons"
+        ]
+      },
+      {
+        "feature_name": "Join Active Lessons",
+        "priority": "MVP",
+        "description": "When a lesson starts, students are notified and can join directly from their dashboard.",
+        "solves_for": [
+          "Missing lesson start",
+          "Uncoordinated class participation"
+        ]
+      },
+      {
+        "feature_name": "Mark Attendance",
+        "priority": "Future",
+        "description": "Optional feature allowing students to confirm their presence when joining a lesson.",
+        "solves_for": [
+          "Manual attendance tracking",
+          "Unverified participation records"
+        ]
+      },
+      {
+        "feature_name": "Solve Tasks",
+        "priority": "MVP",
+        "description": "Students complete questions assigned during lessons and receive immediate feedback once results are processed.",
+        "solves_for": [
+          "Delayed grading",
+          "Limited feedback for students"
+        ]
+      },
+      {
+        "feature_name": "View Past Lessons",
+        "priority": "MVP",
+        "description": "Completed lessons are stored for review, with detailed feedback available for each question.",
+        "solves_for": [
+          "Forgetting past material",
+          "No clear record of performance"
+        ]
+      }
+    ],
+    "shared": [
+      {
+        "feature_name": "Unified Login",
+        "priority": "MVP",
+        "description": "Both teachers and students log in using a School ID. The system automatically directs them to the appropriate interface.",
+        "solves_for": [
+          "Multiple login systems",
+          "Role confusion for users"
+        ]
+      }
+    ]
+  },
+  "common_flows": {
+    "teacher_login": [
+      "Teacher logs in with School ID and selects 'Teacher'.",
+      "They are redirected to the teacher dashboard with options for Groups, Tasks, and Lessons."
+    ],
+    "student_login": [
+      "Student logs in with School ID and selects 'Student'.",
+      "They are redirected to the student dashboard showing all their groups."
+    ]
+  },
+  "scenarios": {
+    "teacher_scenarios": [
+      {
+        "scenario_name": "Running a Lesson (New Teacher)",
+        "steps": [
+          "@teacher_login",
+          "Create a new group by uploading an Excel file with student details.",
+          "The Excel file is parsed locally on the client, and extracted student data is saved to the database.",
+          "Create a task titled 'Algebra Basics Quiz' with 10 multiple-choice questions.",
+          "From the dashboard, select '10th Grade Math' and click 'Start Lesson'.",
+          "Students see the active lesson and join.",
+          "Assign the Algebra Basics Quiz.",
+          "Monitor live progress while students complete tasks.",
+          "Lesson is automatically saved under 'Past Lessons' for review."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Past Lessons",
+        "steps": [
+          "@teacher_login",
+          "Open the 'Groups' section and select a class.",
+          "Go to 'Past Lessons' to view previous sessions with dates and performance summaries.",
+          "Select a lesson to review detailed analytics (participation, scores, common errors).",
+          "Plan adjustments for upcoming lessons based on results."
+        ]
+      },
+      {
+        "scenario_name": "Reusing Existing Tasks",
+        "steps": [
+          "@teacher_login",
+          "Open the 'Tasks' library and choose a previously created task.",
+          "Select a group and start a new lesson.",
+          "Assign the reused task to students.",
+          "Compare results across different groups using the same task."
+        ]
+      }
+    ],
+    "student_scenarios": [
+      {
+        "scenario_name": "Joining and Completing a Lesson",
+        "steps": [
+          "@student_login",
+          "See a notification for an active lesson in '10th Grade Math'.",
+          "Join the lesson and mark attendance (if enabled).",
+          "Complete the Algebra Basics Quiz with 10 multiple-choice questions.",
+          "Results are processed instantly and saved for review.",
+          "After class, check 'Past Lessons' for performance details."
+        ]
+      },
+      {
+        "scenario_name": "Reviewing Progress",
+        "steps": [
+          "@student_login",
+          "Select a group and open 'Past Lessons'.",
+          "Review completed sessions with scores and question-level feedback.",
+          "Notice recurring mistakes (e.g., algebra questions) and prepare accordingly."
+        ]
+      },
+      {
+        "scenario_name": "Handling Multiple Lessons",
+        "steps": [
+          "@student_login",
+          "See two active lessons (Math and Computer Science).",
+          "Join the Math lesson first, complete tasks, then return to join the CS lesson.",
+          "Access results for both later in 'Past Lessons'."
+        ]
+      }
+    ]
+  },
+  "why_it_matters": "InventEd streamlines classroom management for teachers and improves the learning experience for students. Teachers save time organizing groups and tasks while gaining actionable insights through analytics. Students benefit from structured lessons, instant feedback, and a clear view of their progress. The system is simple to use, scalable, and designed to enhance educational outcomes.",
+  "scalability_notes": [
+    "Supports different grading systems per country.",
+    "Can adapt to multiple data import formats beyond Mashov.",
+    "Attendance features configurable based on local requirements."
+  ],
+  "success_metrics": [
+    "Teachers save an average of 15–20 minutes per class setup.",
+    "Over 90% of students complete assigned tasks during lessons.",
+    "Improved student scores in follow-up quizzes by at least 10%.",
+    "High adoption rate among teachers due to ease of use."
+  ]
+}

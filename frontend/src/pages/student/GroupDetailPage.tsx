@@ -40,7 +40,7 @@ export default function StudentGroupDetailPage() {
             <h2 className="text-xl font-semibold">An lesson is active!</h2>
             <p className="text-gray-600 my-4">A lesson has been started for this group.</p>
             <Link
-              to={`/lessons/${activeLesson.id}/task/${activeLesson.taskId}`}
+              to={`/lessons/${activeLesson.id}`}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               Join Lesson

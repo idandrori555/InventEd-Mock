@@ -8,6 +8,7 @@ if (!fs.existsSync(dbDir)) {
 }
 
 const dbPath = path.join(dbDir, "invented.db");
+export { dbPath };
 const db = new Database(dbPath);
 
 const schema = `
@@ -38,7 +39,7 @@ const schema = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT,
-    questions TEXT NOT NULL, -- JSON blob
+    questions TEXT NOT NULL, -- JSON blob. Structure: { type: 'multiple-choice' | 'open-ended', ... }
     teacherId INTEGER NOT NULL,
     FOREIGN KEY (teacherId) REFERENCES Users(id)
   );
@@ -46,11 +47,18 @@ const schema = `
   CREATE TABLE IF NOT EXISTS Lessons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     groupId INTEGER NOT NULL,
-    taskId INTEGER NOT NULL,
     startTime DATETIME NOT NULL,
     endTime DATETIME,
-    FOREIGN KEY (groupId) REFERENCES Groups(id),
-    FOREIGN KEY (taskId) REFERENCES Tasks(id)
+    FOREIGN KEY (groupId) REFERENCES Groups(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS LessonTasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    lessonId INTEGER NOT NULL,
+    taskId INTEGER NOT NULL,
+    FOREIGN KEY (lessonId) REFERENCES Lessons(id),
+    FOREIGN KEY (taskId) REFERENCES Tasks(id),
+    UNIQUE(lessonId, taskId)
   );
 
   CREATE TABLE IF NOT EXISTS StudentAnswers (
@@ -59,6 +67,16 @@ const schema = `
     studentId INTEGER NOT NULL,
     answers TEXT NOT NULL, -- JSON blob
     score INTEGER,
+    FOREIGN KEY (lessonId) REFERENCES Lessons(id),
+    FOREIGN KEY (studentId) REFERENCES Users(id),
+    UNIQUE(lessonId, studentId)
+  );
+
+  CREATE TABLE IF NOT EXISTS Attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    lessonId INTEGER NOT NULL,
+    studentId INTEGER NOT NULL,
+    joinTime DATETIME NOT NULL,
     FOREIGN KEY (lessonId) REFERENCES Lessons(id),
     FOREIGN KEY (studentId) REFERENCES Users(id),
     UNIQUE(lessonId, studentId)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTask, submitAnswers } from '@/lib/api';
-import type { Task, StudentAnswerChoice } from 'common/types';
+import type { Task, StudentAnswerChoice, Question } from 'common/types';
 
 export default function StudentTaskSolverPage() {
   const { lessonId, taskId } = useParams<{ lessonId: string, taskId: string }>();
@@ -20,9 +20,10 @@ export default function StudentTaskSolverPage() {
         const fetchedTask = await getTask(Number(taskId));
         setTask(fetchedTask);
         // Initialize answers state
-        setAnswers(fetchedTask.questions.map((_, index) => ({
+        setAnswers(fetchedTask.questions.map((q: Question, index: number) => ({
           questionIndex: index,
-          selectedAnswer: -1 // -1 means not answered
+          selectedAnswer: q.type === 'open-ended' ? undefined : -1,
+          textAnswer: q.type === 'open-ended' ? '' : undefined,
         })));
       } catch (err) {
         setError(err.message);
@@ -42,16 +43,35 @@ export default function StudentTaskSolverPage() {
     }
   };
 
+  const handleTextAnswerChange = (questionIndex: number, textAnswer: string) => {
+    const newAnswers = [...answers];
+    const answerIndex = newAnswers.findIndex(a => a.questionIndex === questionIndex);
+    if (answerIndex > -1) {
+      newAnswers[answerIndex].textAnswer = textAnswer;
+      setAnswers(newAnswers);
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!lessonId || answers.some(a => a.selectedAnswer === -1)) {
+    if (!lessonId) return;
+
+    const allAnswered = answers.every(a => 
+        (a.selectedAnswer !== -1 && a.selectedAnswer !== undefined) || 
+        (a.textAnswer !== '' && a.textAnswer !== undefined)
+    );
+
+    if (!allAnswered) {
       alert('Please answer all questions before submitting.');
       return;
     }
+
     setIsSubmitting(true);
     try {
+      // The backend expects a single submission for the whole lesson.
+      // This page only handles a single task, which is a workflow simplification for now.
       await submitAnswers(Number(lessonId), answers);
       alert('Submission successful!');
-      navigate('/student');
+      navigate('/student/groups'); // Navigate back to groups page after submission
     } catch (err) {
       setError(err.message);
     } finally {
@@ -72,20 +92,31 @@ export default function StudentTaskSolverPage() {
         {task.questions.map((q, qIndex) => (
           <div key={qIndex} className="bg-white p-6 shadow rounded-lg">
             <p className="font-semibold text-lg mb-4">{qIndex + 1}. {q.question}</p>
-            <div className="space-y-2">
-              {q.options.map((option, oIndex) => (
-                <label key={oIndex} className="flex items-center p-3 rounded-md hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    name={`question-${qIndex}`}
-                    value={oIndex}
-                    onChange={() => handleSelectAnswer(qIndex, oIndex)}
-                    className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                  />
-                  <span className="ml-3 text-gray-700">{option}</span>
-                </label>
-              ))}
-            </div>
+            {(q.type === 'multiple-choice' || q.type === undefined) ? (
+                <div className="space-y-2">
+                {q.options.map((option, oIndex) => (
+                    <label key={oIndex} className="flex items-center p-3 rounded-md hover:bg-gray-50 cursor-pointer">
+                    <input
+                        type="radio"
+                        name={`question-${qIndex}`}
+                        value={oIndex}
+                        onChange={() => handleSelectAnswer(qIndex, oIndex)}
+                        className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                    />
+                    <span className="ml-3 text-gray-700">{option}</span>
+                    </label>
+                ))}
+                </div>
+            ) : (
+                <div>
+                    <textarea
+                        rows={4}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Type your answer here..."
+                        onChange={(e) => handleTextAnswerChange(qIndex, e.target.value)}
+                    />
+                </div>
+            )}
           </div>
         ))}
       </div>

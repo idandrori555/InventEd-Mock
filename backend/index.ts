@@ -16,12 +16,14 @@ app.use(express.json());
 
 import authRoutes from './src/routes/auth';
 import groupRoutes from './src/routes/groups';
+import studentRoutes from './src/routes/student';
 
 // Routes
 app.use('/auth', authRoutes); // Public route
 app.use('/tasks', taskRoutes);
 app.use('/lessons', lessonRoutes);
 app.use('/groups', groupRoutes);
+app.use('/student', studentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

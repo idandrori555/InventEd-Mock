@@ -66,6 +66,32 @@ router.post('/', (req, res) => {
   }
 });
 
+// POST /tasks/generate-ai -> Generate questions for a task using a placeholder
+router.post('/generate-ai', (req, res) => {
+    if (req.user.role !== 'teacher') {
+        return res.status(403).json({ message: 'Forbidden: Only teachers can generate AI tasks.' });
+    }
+
+    // In a real implementation, you would call an AI service here.
+    // For now, we return a hardcoded list of questions.
+    const mockQuestions: Question[] = [
+        {
+            question: 'What is the capital of France?',
+            options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+            correctAnswer: 2,
+            type: 'multiple-choice'
+        },
+        {
+            question: 'Explain the theory of relativity.',
+            options: [],
+            correctAnswer: 0,
+            type: 'open-ended'
+        }
+    ];
+
+    res.json({ questions: mockQuestions });
+});
+
 // GET /tasks/:id -> get task details
 router.get('/:id', (req, res) => {
   const { id } = req.params;

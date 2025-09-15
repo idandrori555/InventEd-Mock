@@ -12,11 +12,14 @@ const API_URL = "http://10.100.102.26:3000";
 
 async function request(endpoint: string, options: RequestInit = {}) {
   const headers = new Headers(options.headers);
-  headers.append("Content-Type", "application/json");
-
   const token = localStorage.getItem("authToken");
   if (token) {
     headers.append("Authorization", `Bearer ${token}`);
+  }
+
+  // Don't set Content-Type for FormData, the browser does it with the boundary
+  if (!(options.body instanceof FormData)) {
+    headers.append("Content-Type", "application/json");
   }
 
   const response = await fetch(`${API_URL}${endpoint}`, {
@@ -80,6 +83,10 @@ export const getTask = (id: number): Promise<Task> => {
   return request(`/tasks/${id}`);
 };
 
+export const getTasksForLesson = (lessonId: number): Promise<Task[]> => {
+    return request(`/lessons/${lessonId}/tasks`);
+};
+
 export const createTask = (data: {
   title: string;
   description: string;
@@ -91,11 +98,15 @@ export const createTask = (data: {
   });
 };
 
+export const generateAiTask = (): Promise<{ questions: Question[] }> => {
+    return request("/tasks/generate-ai", { method: "POST" });
+};
+
 // --- Lesson Routes ---
 
 export const startLesson = (data: {
   groupId: number;
-  taskId: number;
+  taskIds: number[];
 }): Promise<Lesson> => {
   return request("/lessons/start", {
     method: "POST",
@@ -105,6 +116,10 @@ export const startLesson = (data: {
 
 export const getActiveLessonForGroup = (groupId: number): Promise<Lesson> => {
     return request(`/groups/${groupId}/active-lesson`);
+};
+
+export const markAttendance = (lessonId: number): Promise<void> => {
+    return request(`/lessons/${lessonId}/attend`, { method: 'POST' });
 };
 
 export const submitAnswers = (
@@ -122,8 +137,19 @@ export const getLessonAnalytics = (
 ): Promise<{
   averageScore: number;
   submissions: { score: number; studentName: string }[];
+  attendees: { id: number, studentName: string }[];
 }> => {
   return request(`/lessons/${lessonId}/analytics`);
+};
+
+export const getLiveLessonData = (lessonId: number): Promise<{ attendees: User[], submitters: User[] }> => {
+    return request(`/lessons/${lessonId}/live`);
+};
+
+// --- Student Routes ---
+
+export const getStudentLessonHistory = (): Promise<any[]> => {
+    return request("/student/lessons/history");
 };
 
 // --- Group Routes ---

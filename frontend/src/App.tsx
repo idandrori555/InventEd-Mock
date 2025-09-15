@@ -7,10 +7,13 @@ import LoginPage from './pages/LoginPage';
 import TeacherGroupsPage from './pages/teacher/GroupsPage';
 import TeacherTasksPage from './pages/teacher/TeacherTasksPage';
 import TeacherTaskCreatePage from './pages/teacher/TeacherTaskCreatePage';
+import TeacherGroupDetailPage from './pages/teacher/TeacherGroupDetailPage';
 import TeacherLessonAnalyticsPage from './pages/teacher/TeacherLessonAnalyticsPage';
 import StudentDashboardPage from './pages/student/StudentDashboardPage';
 import StudentGroupsPage from './pages/student/GroupsPage';
 import StudentTaskSolverPage from './pages/student/StudentTaskSolverPage';
+import StudentPastLessonsPage from './pages/student/StudentPastLessonsPage';
+import StudentLessonPage from './pages/student/StudentLessonPage';
 
 // Component Imports
 import ProtectedRoute from './components/ProtectedRoute';
@@ -52,6 +55,9 @@ function App() {
                   <Link to="/student/groups" className="text-gray-500 hover:text-gray-700">
                     My Groups
                   </Link>
+                  <Link to="/student/history" className="text-gray-500 hover:text-gray-700">
+                    Lesson History
+                  </Link>
                 </>
               )}
             </div>
@@ -83,6 +89,7 @@ function App() {
             {/* Protected Teacher Routes */}
             <Route element={<ProtectedRoute allowedRoles={['teacher']} />}>
               <Route path="/teacher/groups" element={<TeacherGroupsPage />} />
+              <Route path="/teacher/groups/:id" element={<TeacherGroupDetailPage />} />
               <Route path="/teacher/tasks" element={<TeacherTasksPage />} />
               <Route path="/teacher/tasks/new" element={<TeacherTaskCreatePage />} />
               <Route path="/teacher/lessons/:id/analytics" element={<TeacherLessonAnalyticsPage />} />
@@ -92,6 +99,8 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['student']} />}>
               <Route path="/student/groups" element={<StudentGroupsPage />} />
               <Route path="/student/groups/:id" element={<StudentGroupDetailPage />} />
+              <Route path="/student/history" element={<StudentPastLessonsPage />} />
+              <Route path="/lessons/:lessonId" element={<StudentLessonPage />} />
               <Route path="/lessons/:lessonId/task/:taskId" element={<StudentTaskSolverPage />} />
             </Route>
             

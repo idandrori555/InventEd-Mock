@@ -22,6 +22,7 @@ export interface Question {
   question: string;
   options: string[];
   correctAnswer: number; // index of the correct option
+  type?: 'multiple-choice' | 'open-ended';
 }
 
 export interface Task {
@@ -35,7 +36,6 @@ export interface Task {
 export interface Lesson {
   id: number;
   groupId: number;
-  taskId: number;
   startTime: string; // ISO 8601 date string
   endTime: string | null; // ISO 8601 date string or null if active
 }
@@ -43,7 +43,8 @@ export interface Lesson {
 // Defining student answer structures
 export interface StudentAnswerChoice {
   questionIndex: number;
-  selectedAnswer: number; // index of the selected option
+  selectedAnswer?: number; // index of the selected option
+  textAnswer?: string;
 }
 
 export interface StudentAnswers {
