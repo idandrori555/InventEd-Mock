@@ -81,33 +81,33 @@ export default function TeacherGroupsPage() {
       {isModalOpen && selectedGroupId && (
         <StartLessonFromGroupModal groupId={selectedGroupId} onClose={handleCloseModal} />
       )}
-      <div>
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">Create New Group</h1>
-          <form onSubmit={handleCreateGroup} className="space-y-4 bg-white p-4 rounded-lg shadow">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className="xl:col-span-1">
+          <h1 className="text-2xl font-bold text-slate-800 mb-4">Create New Group</h1>
+          <form onSubmit={handleCreateGroup} className="space-y-4 bg-white p-6 rounded-xl shadow-lg">
             <div>
-              <label htmlFor="group-name" className="block text-sm font-medium text-gray-700">Group Name</label>
+              <label htmlFor="group-name" className="block text-sm font-medium text-slate-600">Group Name</label>
               <input
                 type="text"
                 id="group-name"
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
                 placeholder="e.g., Grade 10 Math"
-                className="mt-1 flex-grow w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full appearance-none rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 required
               />
             </div>
             <div>
-              <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="file-upload" className="block text-sm font-medium text-slate-600">
                 Student List (.xlsx)
-                <span className="text-xs text-gray-500 ml-2">(Columns: Name, PersonalID)</span>
+                <span className="text-xs text-slate-500 ml-2">(Columns: Name, PersonalID)</span>
               </label>
               <input
                 type="file"
                 id="file-upload"
                 onChange={handleFileChange}
                 accept=".xlsx, .xls"
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                className="mt-1 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                 required
               />
             </div>
@@ -116,7 +116,7 @@ export default function TeacherGroupsPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+                className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400"
               >
                 {isSubmitting ? 'Creating...' : 'Create Group from File'}
               </button>
@@ -124,20 +124,20 @@ export default function TeacherGroupsPage() {
           </form>
         </div>
 
-        <div>
-          <h1 className="text-3xl font-bold mb-6">My Groups</h1>
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul role="list" className="divide-y divide-gray-200">
+        <div className="xl:col-span-2">
+          <h1 className="text-2xl font-bold text-slate-800 mb-4">My Groups</h1>
+          <div className="bg-white shadow-lg overflow-hidden rounded-xl">
+            <ul role="list" className="divide-y divide-slate-200">
               {groups.length > 0 ? (
                 groups.map((group) => (
-                  <li key={group.id}>
+                  <li key={group.id} className="hover:bg-slate-50">
                     <div className="px-4 py-4 sm:px-6 flex items-center justify-between">
-                        <Link to={`/teacher/groups/${group.id}`} className="block hover:bg-gray-50 flex-grow">
-                            <p className="text-lg font-medium text-indigo-600">{group.name}</p>
+                        <Link to={`/teacher/groups/${group.id}`} className="flex-grow">
+                            <p className="text-md font-medium text-indigo-600">{group.name}</p>
                         </Link>
                         <button 
                             onClick={() => openStartLessonModal(group.id)}
-                            className="ml-4 px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                            className="ml-4 px-3 py-1.5 border border-transparent text-xs font-medium rounded-full text-white bg-green-600 hover:bg-green-700"
                         >
                             Start Lesson
                         </button>
@@ -145,7 +145,7 @@ export default function TeacherGroupsPage() {
                   </li>
                 ))
               ) : (
-                <li className="px-4 py-4 sm:px-6 text-center text-gray-500">
+                <li className="px-4 py-6 sm:px-6 text-center text-slate-500">
                   No groups found. Create one to get started.
                 </li>
               )}

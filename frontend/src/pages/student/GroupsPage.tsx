@@ -28,26 +28,30 @@ export default function StudentGroupsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">My Groups</h1>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul role="list" className="divide-y divide-gray-200">
-          {groups.length > 0 ? (
-            groups.map((group) => (
-              <li key={group.id}>
-                <Link to={`/student/groups/${group.id}`} className="block hover:bg-gray-50">
-                  <div className="px-4 py-4 sm:px-6">
-                    <p className="text-lg font-medium text-indigo-600">{group.name}</p>
-                  </div>
-                </Link>
-              </li>
-            ))
-          ) : (
-            <li className="px-4 py-4 sm:px-6 text-center text-gray-500">
-              You are not assigned to any groups yet.
-            </li>
-          )}
-        </ul>
-      </div>
+      <h1 className="text-2xl font-bold text-slate-800 mb-6">My Groups</h1>
+      {groups.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {groups.map((group) => (
+            <Link 
+                key={group.id} 
+                to={`/student/groups/${group.id}`} 
+                className="bg-white p-6 shadow-lg rounded-xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+            >
+                <div>
+                    <h3 className="text-lg font-semibold text-indigo-600 truncate">{group.name}</h3>
+                </div>
+                <div className="mt-4 pt-4 border-t border-slate-200">
+                    <p className="text-sm text-slate-500">View Group</p>
+                </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center bg-white p-12 rounded-xl shadow-lg">
+            <h2 className="text-xl font-semibold text-slate-700">No Groups Found</h2>
+            <p className="mt-2 text-sm text-slate-500">You are not assigned to any groups yet.</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -29,31 +29,37 @@ export default function StudentPastLessonsPage() {
         fetchHistory();
     }, []);
 
+    const getScoreColor = (score: number) => {
+        if (score >= 90) return 'bg-green-100 text-green-800';
+        if (score >= 70) return 'bg-yellow-100 text-yellow-800';
+        return 'bg-red-100 text-red-800';
+    }
+
     if (loading) return <div className="text-center p-4">Loading your lesson history...</div>;
     if (error) return <div className="text-center p-4 text-red-500">Error: {error}</div>;
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-6">My Lesson History</h1>
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                <ul role="list" className="divide-y divide-gray-200">
+            <h1 className="text-2xl font-bold text-slate-800 mb-6">My Lesson History</h1>
+            <div className="bg-white shadow-lg overflow-hidden rounded-xl">
+                <ul role="list" className="divide-y divide-slate-200">
                     {history.length > 0 ? (
                         history.map((item) => (
-                            <li key={item.lessonId}>
-                                <div className="px-4 py-4 sm:px-6">
+                            <li key={item.lessonId} className="hover:bg-slate-50">
+                                <div className="px-4 py-5 sm:px-6">
                                     <div className="flex items-center justify-between">
-                                        <p className="text-lg font-medium text-indigo-600 truncate">
+                                        <p className="text-md font-semibold text-indigo-600 truncate">
                                             {item.taskTitle || 'Lesson'}
                                         </p>
                                         <div className="ml-2 flex-shrink-0 flex">
-                                            <p className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            <p className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getScoreColor(item.score)}`}>
                                                 {item.score}%
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-2 sm:flex sm:justify-between">
                                         <div className="sm:flex">
-                                            <p className="flex items-center text-sm text-gray-500">
+                                            <p className="flex items-center text-sm text-slate-500">
                                                 Completed on: {new Date(item.startTime).toLocaleDateString()}
                                             </p>
                                         </div>
@@ -62,7 +68,7 @@ export default function StudentPastLessonsPage() {
                             </li>
                         ))
                     ) : (
-                        <li className="px-4 py-4 sm:px-6 text-center text-gray-500">
+                        <li className="px-4 py-6 sm:px-6 text-center text-slate-500">
                             You have no completed lessons yet.
                         </li>
                     )}

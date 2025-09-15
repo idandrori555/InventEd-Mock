@@ -129,12 +129,12 @@ export default function TeacherTaskCreatePage() {
           <h2 className="text-xl font-semibold">Questions</h2>
           {questions.map((q, qIndex) => (
             <div key={qIndex} className="p-4 border border-gray-200 rounded-lg space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <label className="block text-sm font-medium text-gray-700">Question {qIndex + 1}</label>
                     <select 
                         value={q.type || 'multiple-choice'} 
                         onChange={(e) => handleQuestionTypeChange(qIndex, e.target.value as any)}
-                        className="block w-48 text-sm border-gray-300 rounded-md"
+                        className="block w-full sm:w-48 text-sm border-gray-300 rounded-md"
                     >
                         <option value="multiple-choice">Multiple Choice</option>
                         <option value="open-ended">Open-Ended</option>
